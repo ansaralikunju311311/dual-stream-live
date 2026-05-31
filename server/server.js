@@ -18,34 +18,26 @@ const io = new Server(server, {
 io.on('connection', (socket) => {
   console.log(`User connected: ${socket.id}`);
 
-  // When a user joins a room
   socket.on('join-room', (roomId) => {
     socket.join(roomId);
     console.log(`User ${socket.id} joined room ${roomId}`);
-    // Notify others in the room
     socket.to(roomId).emit('user-connected', socket.id);
   });
 
-  // Relay WebRTC Offer
   socket.on('offer', (data) => {
-    // data should contain { target: socketId, offer: sdp, sender: socketId, roomId }
     socket.to(data.roomId).emit('offer', data);
   });
 
-  // Relay WebRTC Answer
   socket.on('answer', (data) => {
-    // data should contain { target: socketId, answer: sdp, sender: socketId, roomId }
     socket.to(data.roomId).emit('answer', data);
   });
 
-  // Relay ICE Candidate
   socket.on('ice-candidate', (data) => {
     socket.to(data.roomId).emit('ice-candidate', data);
   });
 
   socket.on('disconnect', () => {
     console.log(`User disconnected: ${socket.id}`);
-    // Room disconnect is handled automatically by socket.io
   });
 });
 

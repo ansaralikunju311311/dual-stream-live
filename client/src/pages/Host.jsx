@@ -15,7 +15,6 @@ export default function Host() {
   const webcamVideoRef = useRef(null);
   const screenVideoRef = useRef(null);
   
-  // To keep track of mapping from streamId to type
   const trackMetadataRef = useRef({ webcam: null, screen: null });
 
   useEffect(() => {
@@ -47,7 +46,6 @@ export default function Host() {
       setStatus('Receiving streams...');
       console.log('Received offer');
       
-      // Update metadata if sent with offer
       if (data.webcamStreamId) {
         trackMetadataRef.current.webcam = data.webcamStreamId;
         trackMetadataRef.current.screen = data.screenStreamId;
@@ -59,7 +57,6 @@ export default function Host() {
           
           const stream = event.streams[0];
           
-          // Identify which video element to use
           if (stream) {
             if (stream.id === trackMetadataRef.current.webcam) {
               if (webcamVideoRef.current && webcamVideoRef.current.srcObject !== stream) {
@@ -70,7 +67,6 @@ export default function Host() {
                 screenVideoRef.current.srcObject = stream;
               }
             } else {
-              // Fallback if metadata is missing or mismatched (e.g. just assigning first to webcam, second to screen)
               if (!webcamVideoRef.current.srcObject) {
                  webcamVideoRef.current.srcObject = stream;
               } else if (!screenVideoRef.current.srcObject && webcamVideoRef.current.srcObject.id !== stream.id) {
@@ -117,7 +113,6 @@ export default function Host() {
     
     socketRef.current.on('user-connected', (id) => {
         console.log('Another user joined:', id);
-        // We could reset state if a new client connects
     });
   };
 

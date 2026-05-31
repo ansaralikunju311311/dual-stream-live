@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 @layer utilities {
-  /* Minimal custom styles since we use Tailwind */
 }
 
 body {

@@ -5,10 +5,6 @@ export const ICE_SERVERS = {
     }
   ]
 };
-
-/**
- * Helper to create a unified PeerConnection for sending multiple streams.
- */
 export const createPeerConnection = (onTrack, onIceCandidate) => {
   const pc = new RTCPeerConnection(ICE_SERVERS);
   
